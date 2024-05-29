@@ -1,11 +1,15 @@
 // import React, { useContext, useRef } from "react";
 // import toast from "react-hot-toast";
+import { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../components/providers/AuthProvider";
 // import { TbFidgetSpinner } from "react-icons/tb";
 // import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { saveUser } from "../../api/auth";
 // import { AuthContext } from "../../providers/AuthProvider";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
   // const { user, loading, setLoading, signIn, signInWithGoogle, resetPassword } =
   //   useContext(AuthContext);
@@ -17,21 +21,24 @@ const Login = () => {
   // console.log(loading)
 
   //handle submit
+const {signIn} = useContext(AuthContext)
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
     console.log(email,password);
-    // signIn(email, password)
-    //   .then((result) => {
-    //     console.log(result.user);
-    //     navigate(from, { replace: true });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //     toast.error(error.message);
-    //   });
+   
+    signIn(email, password)
+      .then((result) => {
+        console.log(result.user);
+        // navigate(from, { replace: true });
+        toast('Login Successfully')
+      })
+      .catch((error) => {
+        console.log(error.message);
+        toast.error(error.message);
+      });
   };
   // handleGoogle Sign in
   // const handleGoogleSignIn = () => {
@@ -124,6 +131,7 @@ const Login = () => {
               )} */}
               continue
             </button>
+            <ToastContainer/>
           </div>
         </form>
         <div className="space-y-1">
@@ -157,7 +165,7 @@ const Login = () => {
           >
            Registration
           </Link>
-          .
+          
         </p>
       </div>
     </div>

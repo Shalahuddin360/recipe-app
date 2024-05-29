@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 // import React, { useContext } from "react";
 // import toast from "react-hot-toast";
+import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from "../components/providers/AuthProvider";
 // import { TbFidgetSpinner } from "react-icons/tb";
 // import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { saveUser } from "../../api/auth";
@@ -15,12 +19,15 @@ const Registration = () => {
   //   setLoading,
   //   signInWithGoogle,
   // } = useContext(AuthContext);
+
   // const navigate = useNavigate();
   // const location = useLocation();
   // const from = location.state?.from?.pathname || "/";
 
+  const {createUser} = useContext(AuthContext)
+  const [error,setError] = useState('')
   //handle submit or user registration
-
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -28,6 +35,19 @@ const Registration = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(name,email,password)
+    setError('')
+    createUser(email,password)
+    .then(result=>{
+      const loggedUser = result.user
+      console.log(loggedUser)
+      toast('Registration Successfully')
+      setError('')
+    })
+    .catch(error=>{
+      console.log(error);
+      setError(error.message)
+      toast.error(error.message)
+    })
     // image upload
     // const image = form.image.files[0];
     // const formData = new FormData();
@@ -75,7 +95,7 @@ const Registration = () => {
       // })
     
       //  console.log(url);
-
+     
   };
 
   // handleGoogle Sign in
@@ -168,6 +188,7 @@ const Registration = () => {
             <button
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
+             
             >
               {/* {
               loading ? (
@@ -178,6 +199,7 @@ const Registration = () => {
               } */}
               continue
             </button>
+            <ToastContainer/>
           </div>
         </form>
         <div className="flex items-center pt-4 space-x-1">
@@ -203,8 +225,9 @@ const Registration = () => {
           >
             Login
           </Link>
-          .
+          
         </p>
+        <p className="text-red-300">{error}</p>
       </div>
     </div>
   );
