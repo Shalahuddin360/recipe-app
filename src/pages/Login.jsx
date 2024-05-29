@@ -39,7 +39,7 @@ const from = location.state?.from?.pathname || "/";
     signInWithGoogle()
       .then((result) => {
         setUser(result.user);
-        console.log("login", result.user);
+        console.log(result.user);
         navigate(from, { replace: true });
       })
       .catch((error) => {
