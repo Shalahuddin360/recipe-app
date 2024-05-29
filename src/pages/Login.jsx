@@ -1,27 +1,19 @@
-// import React, { useContext, useRef } from "react";
-// import toast from "react-hot-toast";
+
 import { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../components/providers/AuthProvider";
-// import { TbFidgetSpinner } from "react-icons/tb";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { saveUser } from "../../api/auth";
-// import { AuthContext } from "../../providers/AuthProvider";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from "../components/providers/AuthProvider";
 const Login = () => {
   // const { user, loading, setLoading, signIn, signInWithGoogle, resetPassword } =
   //   useContext(AuthContext);
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
-  // const emailRef = useRef();
-  // const passwordRef = useRef();
-  // console.log(loading)
-
-  //handle submit
-const {signIn} = useContext(AuthContext)
+  
+const {signIn,signInWithGoogle,setLoading,setUser,loading} = useContext(AuthContext);
+const navigate = useNavigate()
+const location = useLocation()
+const from = location.state?.from?.pathname || "/";
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -32,8 +24,10 @@ const {signIn} = useContext(AuthContext)
     signIn(email, password)
       .then((result) => {
         console.log(result.user);
-        // navigate(from, { replace: true });
+        
         toast('Login Successfully')
+        form.reset();
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error.message);
@@ -41,34 +35,20 @@ const {signIn} = useContext(AuthContext)
       });
   };
   // handleGoogle Sign in
-  // const handleGoogleSignIn = () => {
-  //   signInWithGoogle()
-  //     .then((result) => {
-  //       saveUser("email", result.user);
-  //       console.log("login", result.user);
-  //       navigate("/");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.message);
-  //       toast.error(error.message);
-  //       setLoading(false);
-  //     });
-  // };
-  //handle  Password Reset
-  // const handleReset = () => {
-  //   const email = emailRef.current.value;
-  //   //  return console.log(email)
-  //   resetPassword(email)
-  //     .then(() => {
-  //       toast.success("please check your email for reset link");
-  //       setLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       console.log(error.message);
-  //       toast.error(error.message);
-  //     });
-  // };
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        setUser(result.user);
+        console.log("login", result.user);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        toast.error(error.message);
+        setLoading(false);
+      });
+  };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -91,7 +71,7 @@ const {signIn} = useContext(AuthContext)
                 Email address
               </label>
               <input
-                // ref={emailRef}
+               
                 type="email"
                 name="email"
                 id="email"
@@ -108,7 +88,7 @@ const {signIn} = useContext(AuthContext)
                 </label>
               </div>
               <input
-                // useRef={passwordRef}
+               
                 type="password"
                 name="password"
                 id="password"
@@ -124,12 +104,12 @@ const {signIn} = useContext(AuthContext)
               type="submit"
               className="bg-rose-500 w-full rounded-md py-3 text-white"
             >
-              {/* {loading ? (
+              {loading ? (
                 <TbFidgetSpinner size={32} className="m-auto animate-spin" />
               ) : (
                 "Continue"
-              )} */}
-              continue
+              )}
+            
             </button>
             <ToastContainer/>
           </div>
@@ -151,7 +131,7 @@ const {signIn} = useContext(AuthContext)
         </div>
         <div
           className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
-          // onClick={handleGoogleSignIn}
+          onClick={handleGoogleSignIn}
         >
           <FcGoogle size={32} />
 

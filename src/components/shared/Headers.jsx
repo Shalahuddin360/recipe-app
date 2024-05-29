@@ -4,8 +4,8 @@ import { AuthContext } from "../providers/AuthProvider";
 
 
 export default function Navbar() {
-  const {user} = useContext(AuthContext)
-  console.log(user)
+  const {user,logOut} = useContext(AuthContext)
+
   return (
     <div className="navbar bg-base-100 sticky top-0 px-16 z-10">
       <div className="navbar-start">
@@ -31,25 +31,26 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>All Recepies</a>
+              <a className="text-red-700">All Recipe</a>
             </li>
             <li>
-              <a>About Us</a>
+              <a className="text-red-700">About Us</a>
             </li>
             <li>
               <a>Contact Us</a>
             </li>
           </ul>
         </div>
-        <a className=" text-xl">daisyUI</a>
+        <a className=" text-xl">Recipe</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="flex items-center gap-6 px-1">
+   
           <li>
-            <a>All Recepies</a>
+            <Link to={"/about"}>Add Recipe</Link>
           </li>
           <li>
-            <Link to={"/about"}>About Us</Link>
+            <a>Dashboard</a>
           </li>
           <li>
             <a>Contact Us</a>
@@ -57,8 +58,43 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to={'/login'} className="btn mr-2"  >Login</Link>
-        <Link to={'/register'} className="btn">Register</Link>
+          {
+            user ? (
+              <>
+                {/* <Link
+                  // to="/dashboard"
+                  className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                >
+                   Dashboard
+                </Link> */}
+                <div
+                  onClick={()=>{
+               
+                    logOut()
+                  }}
+                  className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer"
+                >
+                  Logout
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                >
+                  Login
+                </Link>
+
+                <Link
+                  to="/register"
+                  className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                >
+                  Register
+                </Link>
+              </>
+            )
+            }
       </div>
     </div>
   );

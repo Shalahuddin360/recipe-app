@@ -1,31 +1,29 @@
-import { Link } from "react-router-dom";
-// import React, { useContext } from "react";
-// import toast from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { TbFidgetSpinner } from "react-icons/tb";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from "../components/providers/AuthProvider";
-// import { TbFidgetSpinner } from "react-icons/tb";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { saveUser } from "../../api/auth";
-// import { AuthContext } from "../../providers/AuthProvider";
+
+
 const Registration = () => {
-  // const {
-  //   user,
-  //   loading,
-  //   updateUserProfile,
-  //   createUser,
-  //   setLoading,
-  //   signInWithGoogle,
-  // } = useContext(AuthContext);
+  const {
+    setUser,
+    setLoading,
+    createUser,
+    signInWithGoogle,
+    loading
+  } = useContext(AuthContext);
 
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const {createUser} = useContext(AuthContext)
-  const [error,setError] = useState('')
+
+  const [error,setError] = useState('');
+
   //handle submit or user registration
   
   const handleSubmit = (event) => {
@@ -42,77 +40,31 @@ const Registration = () => {
       console.log(loggedUser)
       toast('Registration Successfully')
       setError('')
+      navigate(from, { replace: true });
     })
     .catch(error=>{
       console.log(error);
       setError(error.message)
       toast.error(error.message)
     })
-    // image upload
-    // const image = form.image.files[0];
-    // const formData = new FormData();
-    // formData.append("image", image);
-    // console.log(formData)
-    // const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`;
-    // fetch(url, {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((res) => res.json())
-    //   .then((imgData) => {
-    //     const imgUrl = imgData.data.display_url;
-    //     console.log(imgUrl);
-        // createUser(email,password)
-        // .then(result=>{
-        //   console.log(result.user)
-        //   updateUserProfile(name,imgUrl)
-        //   navigate(form,{replace:true})
-        //    .then(()=>{
-        //     save user to database 
-        //     saveUser(result.user)
-        //     navigate(from,{replace:true})
-        //     toast.success('Update Profile Successfully')
-        //    })
-        //    .catch(error=>{
-        //     setLoading(false)
-        //     console.log(error.message);
-        //     toast.error(error.message)
-
-        //    })
-        
-        // })
-        // .catch(error=>{
-        //   setLoading(false)
-        //   console.log(error.message);
-        //   toast.error(error.message)
-        // })
-
-      // })
-      // .catch(error=>{
-      //   //  setLoading(false)
-      //    console.log(error.message)
-      //   //  toast.error(error.message)
-      // })
     
-      //  console.log(url);
-     
   };
 
   // handleGoogle Sign in
-  // const handleGoogleSignIn = () => {
-  //   signInWithGoogle()
-  //     .then((result) => {
-  //       console.log(result.user);
-  //      // save user to db  
-  //       // saveUser(result.user)
-  //       // navigate("/");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.message);
-  //       // toast.error(error.message);
-  //       // setLoading(false);
-  //     });
-  // };
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+       
+        setUser(result.user)
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        toast.error(error.message);
+        setLoading(false);
+      });
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -141,18 +93,7 @@ const Registration = () => {
                 data-temp-mail-org="0"
               />
             </div>
-            {/* <div>
-              <label htmlFor="image" className="block mb-2 text-sm">
-                Select Image:
-              </label>
-              <input
-                required
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-              />
-            </div> */}
+   
             <div>
               <label htmlFor="email" className="block mb-2 text-sm">
                 Email address
@@ -190,14 +131,13 @@ const Registration = () => {
               className="bg-rose-500 w-full rounded-md py-3 text-white"
              
             >
-              {/* {
+              {
               loading ? (
                 <TbFidgetSpinner size={32} className="m-auto animate-spin" />
               ) : (
                 "Continue"
               )
-              } */}
-              continue
+              }
             </button>
             <ToastContainer/>
           </div>
@@ -211,7 +151,7 @@ const Registration = () => {
         </div>
         <div
           className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
-          // onClick={handleGoogleSignIn}
+          onClick={handleGoogleSignIn}
         >
           <FcGoogle size={32} />
 
