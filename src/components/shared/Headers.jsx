@@ -41,7 +41,8 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-        <a className=" text-xl">Recipe</a>
+
+        <a className=" text-yellow-200 text-2xl">Fresh Food</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="flex items-center gap-6 px-1">
@@ -56,6 +57,7 @@ export default function Navbar() {
             <a>Contact Us</a>
           </li>
         </ul>
+       
       </div>
       <div className="navbar-end">
           {
